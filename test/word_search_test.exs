@@ -13,7 +13,6 @@ defmodule WordSearchTest do
     assert output == expected
   end
 
-  @tag :pending
   test "Should locate one word written left to right" do
     grid = "clojurermt"
     words = ["clojure"]
