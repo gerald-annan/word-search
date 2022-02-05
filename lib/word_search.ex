@@ -14,8 +14,18 @@ defmodule WordSearch do
   """
   @spec search(grid :: String.t(), words :: [String.t()]) :: %{String.t() => nil | Location.t()}
   def search(grid, words) do
-    String.split(grid, "\n")
-    |> Enum.with_index(fn element, index -> {index, element} end)
-    |> Enum.into(%{})
+    flattened_grid_map =
+      String.split(grid, "\n")
+      |> Enum.with_index(fn element, row -> {row, element} end)
+      |> Enum.into(%{})
+
+    Enum.reduce(words, %{}, fn word, acc ->
+      isPresent =
+        Enum.any?(flattened_grid_map, fn {_row, element} ->
+          String.contains?(element, word)
+        end)
+
+      if !isPresent, do: Map.put_new(acc, word, nil)
+    end)
   end
 end
