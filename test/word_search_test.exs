@@ -191,7 +191,6 @@ defmodule WordSearchTest do
     assert output == expected
   end
 
-  @tag :pending
   test "Should locate a single word written right to left" do
     grid = "rixilelhrs"
     words = ["elixir"]
