@@ -203,7 +203,6 @@ defmodule WordSearchTest do
     assert output == expected
   end
 
-  @tag :pending
   test "Should locate multiple words written in different horizontal directions" do
     grid = """
     jefblpepre
