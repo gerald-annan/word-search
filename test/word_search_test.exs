@@ -25,7 +25,6 @@ defmodule WordSearchTest do
     assert output == expected
   end
 
-  @tag :pending
   test "Should locate the same word written left to right in a different position" do
     grid = "mtclojurer"
     words = ["clojure"]

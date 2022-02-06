@@ -37,7 +37,9 @@ defmodule WordSearch do
           distance = String.length(element) - String.length(word)
 
           Enum.reduce(0..distance, %{}, fn shift, acc ->
-            upper_bound = String.length(word) - 1
+            upper_bound = shift + (String.length(word) - 1)
+            IO.inspect(shift, label: :shift)
+            IO.inspect(upper_bound, label: :upbound)
 
             if String.slice(element, shift..upper_bound) == word do
               Map.put_new(acc, word, %Location{
