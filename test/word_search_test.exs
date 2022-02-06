@@ -49,7 +49,6 @@ defmodule WordSearchTest do
     assert output == expected
   end
 
-  @tag :pending
   test "Should locate that different left to right word in a different position" do
     grid = "xcoffeezlp"
     words = ["coffee"]
