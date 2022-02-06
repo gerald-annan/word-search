@@ -37,7 +37,6 @@ defmodule WordSearch do
           distance = String.length(element) - String.length(word)
 
           Enum.reduce(0..distance, %{}, fn shift, acc ->
-            IO.inspect(shift, label: :shift)
             upper_bound = shift + (String.length(word) - 1)
 
             if String.slice(element, shift..upper_bound) == word do
@@ -49,7 +48,7 @@ defmodule WordSearch do
               acc
             end
           end)
-          |> IO.inspect(label: :debug)
+          |> Map.merge(search_results)
         else
           [isRightToLeft | [row | [element]]] =
             Enum.reduce(flattened_grid_map, [false, nil, nil], fn {index, element}, acc ->
@@ -65,16 +64,15 @@ defmodule WordSearch do
               upper_bound = shift + (String.length(word) - 1)
 
               if String.slice(element, shift..upper_bound) == String.reverse(word) do
-                Map.put_new(search_results, word, %Location{
+                Map.put_new(acc, word, %Location{
                   to: %{row: row, column: shift + 1},
                   from: %{row: row, column: String.length(word) + shift}
                 })
-
-                IO.inspect(search_results, label: :debug2)
               else
                 acc
               end
             end)
+            |> Map.merge(search_results)
           end
         end
       end
