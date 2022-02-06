@@ -166,7 +166,6 @@ defmodule WordSearchTest do
     assert output == expected
   end
 
-  @tag :pending
   test "Should locate multiple words" do
     grid = """
     jefblpepre

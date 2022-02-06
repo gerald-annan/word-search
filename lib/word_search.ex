@@ -19,13 +19,13 @@ defmodule WordSearch do
       |> Enum.with_index(fn element, row -> {row, element} end)
       |> Enum.into(%{})
 
-    Enum.reduce(words, %{}, fn word, acc ->
+    Enum.reduce(words, %{}, fn word, search_results ->
       isPresent =
         Enum.any?(flattened_grid_map, fn {_, element} ->
           String.contains?(element, word)
         end)
 
-      if !isPresent, do: Map.put_new(acc, word, nil)
+      if !isPresent, do: Map.put_new(search_results, word, nil)
 
       if isPresent do
         [isLeftToRight, row, element] =
@@ -40,7 +40,7 @@ defmodule WordSearch do
             upper_bound = shift + (String.length(word) - 1)
 
             if String.slice(element, shift..upper_bound) == word do
-              Map.put_new(acc, word, %Location{
+              Map.put_new(search_results, word, %Location{
                 from: %{row: row, column: shift + 1},
                 to: %{row: row, column: String.length(word) + shift}
               })
