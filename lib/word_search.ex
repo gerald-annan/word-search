@@ -30,13 +30,15 @@ defmodule WordSearch do
       if !isHorizontal do
         vertical =
           Enum.reduce(1..map_size(flattened_grid_map), [], fn pos, arr ->
-            [
-              Enum.reduce(flattened_grid_map, "", fn {_, element}, acc ->
-                "#{acc}#{String.at(element, pos - 1)}"
-              end)
-              | arr
-            ]
+            arr ++
+              [
+                Enum.reduce(flattened_grid_map, "", fn {_, element}, acc ->
+                  "#{acc}#{String.at(element, pos - 1)}"
+                end)
+              ]
           end)
+          |> Enum.with_index(fn element, row -> {row, element} end)
+          |> Enum.into(%{})
 
         isVertical =
           Enum.any?(vertical, fn {_, element} ->
@@ -46,6 +48,10 @@ defmodule WordSearch do
         if !isVertical do
           Map.put_new(search_results, word, nil)
         else
+          [isTopToBottom | [row | [element]]] =
+            Enum.reduce(vertical, [false, nil, nil], fn {index, element}, acc ->
+              if String.contains?(element, word), do: [true, index + 1, element], else: acc
+            end)
         end
       else
         [isLeftToRight | [row | [element]]] =
