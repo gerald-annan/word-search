@@ -22,16 +22,13 @@ defmodule WordSearch do
       |> Enum.into(%{})
 
     Enum.reduce(words, %{}, fn word, search_results ->
-      isPresent =
+      isHorizontal =
         Enum.any?(flattened_grid_map, fn {_, element} ->
           String.contains?(element, word) || String.contains?(element, String.reverse(word))
         end)
 
-      if !isPresent do
-        # Map.put_new(search_results, word, nil)
-        IO.inspect(flattened_grid_map, label: :map)
-
-        topbottom =
+      if !isHorizontal do
+        vertical =
           Enum.reduce(1..map_size(flattened_grid_map), [], fn pos, arr ->
             [
               Enum.reduce(flattened_grid_map, "", fn {_, element}, acc ->
@@ -41,7 +38,15 @@ defmodule WordSearch do
             ]
           end)
 
-        IO.inspect(topbottom, label: :debug)
+        isVertical =
+          Enum.any?(vertical, fn {_, element} ->
+            String.contains?(element, word) || String.contains?(element, String.reverse(word))
+          end)
+
+        if !isVertical do
+          Map.put_new(search_results, word, nil)
+        else
+        end
       else
         [isLeftToRight | [row | [element]]] =
           Enum.reduce(flattened_grid_map, [false, nil, nil], fn {index, element}, acc ->
