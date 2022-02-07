@@ -70,6 +70,30 @@ defmodule WordSearch do
             end)
             |> Map.merge(search_results)
           else
+            [isBottomToTop | [col | [element]]] =
+              Enum.reduce(vertical, [false, nil, nil], fn {index, element}, acc ->
+                if String.contains?(element, String.reverse(word)),
+                  do: [true, index + 1, element],
+                  else: acc
+              end)
+
+            if isBottomToTop do
+              distance = String.length(element) - String.length(word)
+
+              Enum.reduce(0..distance, %{}, fn shift, acc ->
+                upper_bound = shift + (String.length(word) - 1)
+
+                if String.slice(element, shift..upper_bound) == String.reverse(word) do
+                  Map.put_new(acc, word, %Location{
+                    from: %{row: String.length(word) + shift, column: col},
+                    to: %{row: shift + 1, column: col}
+                  })
+                else
+                  acc
+                end
+              end)
+              |> Map.merge(search_results)
+            end
           end
         end
       else
