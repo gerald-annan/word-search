@@ -15,7 +15,9 @@ defmodule WordSearch do
   @spec search(grid :: String.t(), words :: [String.t()]) :: %{String.t() => nil | Location.t()}
   def search(grid, words) do
     flattened_grid_map =
-      String.split(grid, "\n")
+      String.replace(grid, "\n", " ")
+      |> String.trim()
+      |> String.split(" ")
       |> Enum.with_index(fn element, row -> {row, element} end)
       |> Enum.into(%{})
 
@@ -26,7 +28,20 @@ defmodule WordSearch do
         end)
 
       if !isPresent do
-        Map.put_new(search_results, word, nil)
+        # Map.put_new(search_results, word, nil)
+        IO.inspect(flattened_grid_map, label: :map)
+
+        topbottom =
+          Enum.reduce(1..map_size(flattened_grid_map), [], fn pos, arr ->
+            [
+              Enum.reduce(flattened_grid_map, "", fn {_, element}, acc ->
+                "#{acc}#{String.at(element, pos - 1)}"
+              end)
+              | arr
+            ]
+          end)
+
+        IO.inspect(topbottom, label: :debug)
       else
         [isLeftToRight | [row | [element]]] =
           Enum.reduce(flattened_grid_map, [false, nil, nil], fn {index, element}, acc ->
