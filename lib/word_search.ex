@@ -162,14 +162,3 @@ alxhpburyi
 jalaycalmp
 clojurermt
 """
-
-list = String.trim(grid) |> String.split("\n") |> IO.inspect()
-
-Enum.reduce(list, [], fn _item, acc ->
-  %{j: _, str: str} =
-    Enum.reduce(list, %{j: 0, str: ""}, fn element, %{j: j, str: str} ->
-      %{j: j + 1, str: "#{str <> String.at(element, j)}"}
-    end)
-
-  acc ++ [str]
-end)
