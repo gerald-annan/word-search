@@ -281,7 +281,6 @@ defmodule WordSearchTest do
     assert output == expected
   end
 
-  @tag :pending
   test "Should locate words written top left to bottom right" do
     grid = """
     jefblpepre
