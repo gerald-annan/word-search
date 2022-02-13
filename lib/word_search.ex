@@ -171,5 +171,5 @@ Enum.reduce(list, [], fn _item, acc ->
       %{j: j + 1, str: "#{str <> String.at(element, j)}"}
     end)
 
-  acc
+  acc ++ [str]
 end)
