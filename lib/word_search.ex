@@ -142,9 +142,34 @@ defmodule WordSearch do
               end
             end)
             |> Map.merge(search_results)
+          else
           end
         end
       end
     end)
   end
 end
+
+grid = """
+jefblpepre
+camdcimgtc
+oivokprjsm
+pbwasqroua
+rixilelhrs
+wolcqlirpc
+screeaumgr
+alxhpburyi
+jalaycalmp
+clojurermt
+"""
+
+list = String.trim(grid) |> String.split("\n") |> IO.inspect()
+
+Enum.reduce(list, [], fn _item, acc ->
+  %{j: _, str: str} =
+    Enum.reduce(list, %{j: 0, str: ""}, fn element, %{j: j, str: str} ->
+      %{j: j + 1, str: "#{str <> String.at(element, j)}"}
+    end)
+
+  acc ++ [str]
+end)
