@@ -175,15 +175,15 @@ Enum.reduce(list, %{i: 0, vals: []}, fn _, %{i: i, vals: vals} ->
 end)
 |> IO.inspect()
 
-"######################################################" |> IO.puts()
+# "######################################################" |> IO.puts()
 
-Enum.reduce(1..length(list), %{list: list, vals: []}, fn _, %{list: items, vals: vals} ->
-  %{j: _, str: strval} =
-    Enum.reduce(items, %{j: 0, str: ""}, fn element, %{j: j, str: str} ->
-      %{j: j + 1, str: "#{str}#{String.at(element, j)}"}
-    end)
+# Enum.reduce(1..length(list), %{list: list, vals: []}, fn _, %{list: items, vals: vals} ->
+#   %{j: _, str: strval} =
+#     Enum.reduce(items, %{j: 0, str: ""}, fn element, %{j: j, str: str} ->
+#       %{j: j + 1, str: "#{str}#{String.at(element, j)}"}
+#     end)
 
-  [_ | tail] = items
-  %{list: tail, vals: vals ++ [strval]}
-end)
-|> IO.inspect()
+#   [_ | tail] = items
+#   %{list: tail, vals: vals ++ [strval]}
+# end)
+# |> IO.inspect()
