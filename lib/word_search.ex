@@ -46,7 +46,49 @@ defmodule WordSearch do
           end)
 
         if !isVertical do
-          Map.put_new(search_results, word, nil)
+          # Map.put_new(search_results, word, nil)
+          list = String.trim(grid) |> String.split("\n")
+
+          %{i: _, vals: items} =
+            Enum.reduce(list, %{i: 0, vals: []}, fn _, %{i: i, vals: vals} ->
+              %{j: _, str: strval} =
+                Enum.reduce(list, %{j: i, str: ""}, fn element, %{j: j, str: str} ->
+                  %{j: j + 1, str: "#{str}#{String.at(element, j)}"}
+                end)
+
+              %{i: i + 1, vals: vals ++ [strval]}
+            end)
+
+          upper_grid =
+            items
+            |> Enum.with_index(fn element, col -> {col, element} end)
+            |> Enum.into(%{})
+
+          [isUpperHalf | [col | [element]]] =
+            Enum.reduce(upper_grid, [false, nil, nil], fn {index, element}, acc ->
+              if String.contains?(element, word),
+                do: [true, index + 1, element],
+                else: acc
+            end)
+
+          if isUpperHalf do
+            distance = String.length(element) - String.length(word)
+
+            Enum.reduce(0..distance, %{}, fn shift, acc ->
+              upper_bound = shift + (String.length(word) - 1)
+
+              if String.slice(element, shift..upper_bound) == word do
+                Map.put_new(acc, word, %Location{
+                  from: %{row: shift + 1, column: col + shift},
+                  to: %{row: upper_bound + 1, column: col + upper_bound}
+                })
+              else
+                acc
+              end
+            end)
+            |> Map.merge(search_results)
+          else
+          end
         else
           [isTopToBottom | [col | [element]]] =
             Enum.reduce(vertical, [false, nil, nil], fn {index, element}, acc ->
@@ -143,33 +185,6 @@ defmodule WordSearch do
             end)
             |> Map.merge(search_results)
           else
-            list = String.trim(grid) |> String.split("\n")
-
-            %{i: _, vals: items} =
-              Enum.reduce(list, %{i: 0, vals: []}, fn _, %{i: i, vals: vals} ->
-                %{j: _, str: strval} =
-                  Enum.reduce(list, %{j: i, str: ""}, fn element, %{j: j, str: str} ->
-                    %{j: j + 1, str: "#{str}#{String.at(element, j)}"}
-                  end)
-
-                %{i: i + 1, vals: vals ++ [strval]}
-              end)
-
-            upper_grid =
-              items
-              |> Enum.with_index(fn element, col -> {col, element} end)
-              |> Enum.into(%{})
-
-            [isUpperHalf | [col | [element]]] =
-              Enum.reduce(items, [false, nil, nil], fn {index, element}, acc ->
-                if String.contains?(element, word),
-                  do: [true, index + 1, element],
-                  else: acc
-              end)
-
-            if isUpperHalf do
-            else
-            end
           end
         end
       end
