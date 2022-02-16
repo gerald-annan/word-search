@@ -143,6 +143,33 @@ defmodule WordSearch do
             end)
             |> Map.merge(search_results)
           else
+            list = String.trim(grid) |> String.split("\n")
+
+            %{i: _, vals: items} =
+              Enum.reduce(list, %{i: 0, vals: []}, fn _, %{i: i, vals: vals} ->
+                %{j: _, str: strval} =
+                  Enum.reduce(list, %{j: i, str: ""}, fn element, %{j: j, str: str} ->
+                    %{j: j + 1, str: "#{str}#{String.at(element, j)}"}
+                  end)
+
+                %{i: i + 1, vals: vals ++ [strval]}
+              end)
+
+            upper_grid =
+              items
+              |> Enum.with_index(fn element, col -> {col, element} end)
+              |> Enum.into(%{})
+
+            [isUpperHalf | [col | [element]]] =
+              Enum.reduce(items, [false, nil, nil], fn {index, element}, acc ->
+                if String.contains?(element, word),
+                  do: [true, index + 1, element],
+                  else: acc
+              end)
+
+            if isUpperHalf do
+            else
+            end
           end
         end
       end
@@ -150,30 +177,18 @@ defmodule WordSearch do
   end
 end
 
-grid = """
-jefblpepre
-camdcimgtc
-oivokprjsm
-pbwasqroua
-rixilelhrs
-wolcqlirpc
-screeaumgr
-alxhpburyi
-jalaycalmp
-clojurermt
-"""
-
-list = String.trim(grid) |> String.split("\n")
-
-Enum.reduce(list, %{i: 0, vals: []}, fn _, %{i: i, vals: vals} ->
-  %{j: _, str: strval} =
-    Enum.reduce(list, %{j: i, str: ""}, fn element, %{j: j, str: str} ->
-      %{j: j + 1, str: "#{str}#{String.at(element, j)}"}
-    end)
-
-  %{i: i + 1, vals: vals ++ [strval]}
-end)
-|> IO.inspect()
+# grid = """
+# jefblpepre
+# camdcimgtc
+# oivokprjsm
+# pbwasqroua
+# rixilelhrs
+# wolcqlirpc
+# screeaumgr
+# alxhpburyi
+# jalaycalmp
+# clojurermt
+# """
 
 # "######################################################" |> IO.puts()
 
