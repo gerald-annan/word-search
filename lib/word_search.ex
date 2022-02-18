@@ -96,7 +96,6 @@ defmodule WordSearch do
     grid = Grid.new(grid)
 
     domains = generate_domains(grid, words)
-    IO.inspect(domains, label: :domains)
     find_words(grid, domains)
   end
 
