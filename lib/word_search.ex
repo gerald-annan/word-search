@@ -17,14 +17,13 @@ defmodule WordSearch do
 
     def new(formatted) do
       formatted_rows = formatted |> String.split("\n", trim: true)
+      IO.inspect(formatted_rows)
 
       grid =
         for {row, y} <- formatted_rows |> Stream.with_index(),
             {elem, x} <- to_charlist(row) |> Stream.with_index(),
             into: %{},
             do: {{x, y}, elem}
-
-      IO.inspect(grid)
 
       rows = length(formatted_rows)
       cols = formatted_rows |> hd() |> to_charlist() |> length()
@@ -95,10 +94,10 @@ defmodule WordSearch do
   def search(grid, words) do
     words = Enum.map(words, &to_charlist/1)
     grid = Grid.new(grid)
-    IO.inspect(grid)
-    # domains = generate_domains(grid, words)
+    
+    domains = generate_domains(grid, words)
 
-    # find_words(grid, domains)
+    find_words(grid, domains)
   end
 
   def generate_domains(grid, words) do
