@@ -24,6 +24,8 @@ defmodule WordSearch do
             into: %{},
             do: {{x, y}, elem}
 
+      IO.inspect(grid)
+
       rows = length(formatted_rows)
       cols = formatted_rows |> hd() |> to_charlist() |> length()
 
@@ -93,9 +95,10 @@ defmodule WordSearch do
   def search(grid, words) do
     words = Enum.map(words, &to_charlist/1)
     grid = Grid.new(grid)
-    domains = generate_domains(grid, words)
+    IO.inspect(grid)
+    # domains = generate_domains(grid, words)
 
-    find_words(grid, domains)
+    # find_words(grid, domains)
   end
 
   def generate_domains(grid, words) do
