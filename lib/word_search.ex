@@ -94,9 +94,9 @@ defmodule WordSearch do
   def search(grid, words) do
     words = Enum.map(words, &to_charlist/1)
     grid = Grid.new(grid)
-    
-    domains = generate_domains(grid, words)
 
+    domains = generate_domains(grid, words)
+    IO.inspect(domains, label: :domains)
     find_words(grid, domains)
   end
 
